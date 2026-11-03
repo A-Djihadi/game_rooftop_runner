@@ -1,5 +1,5 @@
 // Tests de la logique pure du Rooftop Runner (aucune dépendance).
-// Exécution : node --test tests/
+// Exécution : node --test
 import test from 'node:test';
 import assert from 'node:assert/strict';
 

@@ -21,7 +21,7 @@ jobs:
       - name: Images Docker disponibles
         run: sh scripts/check-images.sh
       - name: Tests unitaires (Node)
-        run: node --test tests/
+        run: node --test
 
   image:
     needs: check
