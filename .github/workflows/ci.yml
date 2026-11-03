@@ -53,12 +53,12 @@ jobs:
           done
           curl -fsSI http://127.0.0.1:8080/ | grep -qi '^content-security-policy:' || { echo "CSP absente"; exit 1; }
       - name: Scan Trivy (bloquant sur CRITICAL)
-        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
-        with:
-          image-ref: ${{ env.IMAGE }}:${{ github.sha }}
-          severity: CRITICAL
-          exit-code: "1"
-          ignore-unfixed: true
+        run: |
+          curl --retry 5 --retry-delay 3 --retry-all-errors -fsSL \
+            https://github.com/aquasecurity/trivy/releases/download/v0.70.0/trivy_0.70.0_Linux-64bit.tar.gz \
+            | tar xz -C /usr/local/bin trivy
+          trivy image --severity CRITICAL --exit-code 1 --ignore-unfixed --no-progress \
+            "${{ env.IMAGE }}:${{ github.sha }}"
       - name: Push sur GHCR
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
