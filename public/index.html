@@ -2,10 +2,49 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Rooftop Runner — un stickman court sur les toits. Sautez pour éviter les trous et les obstacles.">
+  <meta name="theme-color" content="#05060a">
   <title>Rooftop Runner — OhDjiGames</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <p>Rooftop Runner — bientôt disponible.</p>
+  <main id="game-shell">
+    <canvas id="game" aria-label="Rooftop Runner — zone de jeu"></canvas>
+
+    <!-- Score pendant la partie -->
+    <div id="hud" class="hidden">
+      <span id="hud-score" aria-label="Score">0</span>
+      <span id="hud-best" aria-label="Record">Record : 0</span>
+    </div>
+
+    <!-- Écran de menu -->
+    <section id="menu-screen" class="overlay" aria-label="Menu principal">
+      <div class="panel">
+        <h1 class="title">Rooftop Runner</h1>
+        <p class="tagline">OhDjiGames</p>
+        <p class="instructions">Courez sur les toits, sautez par-dessus les trous et les obstacles. Plus vous allez loin, plus ça va vite.</p>
+        <button id="start-button" class="btn" type="button" tabindex="-1">Commencer</button>
+        <p class="hint">Espace · Clic · Toucher</p>
+        <p id="menu-best" class="best">Record : 0</p>
+      </div>
+    </section>
+
+    <!-- Écran de game over -->
+    <section id="gameover-screen" class="overlay hidden" aria-label="Game over">
+      <div class="panel">
+        <h2 class="gameover-title">Game Over</h2>
+        <p id="gameover-cause" class="cause"></p>
+        <p class="final-score">Score <span id="gameover-score">0</span></p>
+        <p id="new-record" class="new-record hidden">Nouveau record&nbsp;!</p>
+        <p id="gameover-best" class="best">Record : 0</p>
+        <button id="replay-button" class="btn" type="button" tabindex="-1">Rejouer</button>
+        <p class="hint">Espace · Clic · Toucher</p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/main.js"></script>
 </body>
 </html>
