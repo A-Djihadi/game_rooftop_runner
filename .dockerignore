@@ -1,0 +1,8 @@
+.git
+.gitignore
+.github
+scripts
+tests
+package.json
+README.md
+node_modules
