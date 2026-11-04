@@ -116,32 +116,33 @@ function resize() {
 
 // --- Rendu. ---
 function drawSky(ctx, t) {
+  // Ciel neutre, très sombre : pas de dégradé néon, on reste dans la palette du hub.
   const g = ctx.createLinearGradient(0, 0, 0, viewH);
   g.addColorStop(0, '#05060a');
-  g.addColorStop(0.55, '#0a1226');
-  g.addColorStop(0.66, '#131b33');
+  g.addColorStop(0.7, '#080b12');
+  g.addColorStop(1, '#0c1018');
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, viewW, viewH);
 
-  // Lune (disque procédural).
+  // Lune (disque procédural, monochrome).
   const glow = ctx.createRadialGradient(moon.x, moon.y, 4, moon.x, moon.y, 54);
-  glow.addColorStop(0, 'rgba(226, 232, 240, 0.9)');
-  glow.addColorStop(0.4, 'rgba(148, 163, 184, 0.35)');
-  glow.addColorStop(1, 'rgba(148, 163, 184, 0)');
+  glow.addColorStop(0, 'rgba(242, 242, 242, 0.8)');
+  glow.addColorStop(0.4, 'rgba(242, 242, 242, 0.22)');
+  glow.addColorStop(1, 'rgba(242, 242, 242, 0)');
   ctx.fillStyle = glow;
   ctx.fillRect(moon.x - 54, moon.y - 54, 108, 108);
-  ctx.fillStyle = '#e2e8f0';
+  ctx.fillStyle = '#f2f2f2';
   ctx.beginPath();
   ctx.arc(moon.x, moon.y, 18, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = '#cbd5e1';
+  ctx.fillStyle = '#c9cdd4';
   ctx.beginPath();
   ctx.arc(moon.x - 6, moon.y - 4, 4, 0, Math.PI * 2);
   ctx.arc(moon.x + 5, moon.y + 6, 3, 0, Math.PI * 2);
   ctx.fill();
 
   // Étoiles (scintillement léger).
-  ctx.fillStyle = 'rgba(226, 232, 240, 0.8)';
+  ctx.fillStyle = 'rgba(242, 242, 242, 0.8)';
   for (const s of stars) {
     const twinkle = 0.5 + 0.5 * Math.sin(t * 0.002 + s.x);
     ctx.globalAlpha = 0.3 + 0.5 * twinkle;
@@ -175,36 +176,27 @@ function drawRoofs() {
     const x = r.x;
     const w = r.w;
     if (x + w < 0 || x > viewW) continue;
-    const g = ctx.createLinearGradient(0, groundY, 0, groundY + thickness);
-    g.addColorStop(0, '#1e293b');
-    g.addColorStop(1, '#0b1220');
-    ctx.fillStyle = g;
+    ctx.fillStyle = '#161a24';
     ctx.fillRect(x, groundY, w, thickness);
-    // Liseré néon du toit.
-    ctx.strokeStyle = '#22d3ee';
-    ctx.shadowColor = 'rgba(34, 211, 238, 0.8)';
-    ctx.shadowBlur = 8;
-    ctx.lineWidth = 2;
+    // Liseré fin du toit (accent gameplay cyan, sans halo néon).
+    ctx.strokeStyle = '#4bd5ee';
+    ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(x, groundY);
-    ctx.lineTo(x + w, groundY);
+    ctx.moveTo(x, groundY + 0.5);
+    ctx.lineTo(x + w, groundY + 0.5);
     ctx.stroke();
-    ctx.shadowBlur = 0;
   }
 }
 
 function drawObstacles() {
   for (const o of game.obstacles) {
     if (o.x + o.w < 0 || o.x > viewW) continue;
-    ctx.fillStyle = '#2a1533';
+    ctx.fillStyle = '#201a08';
     ctx.fillRect(o.x, o.y, o.w, o.h);
-    ctx.strokeStyle = '#e879f9';
-    ctx.shadowColor = 'rgba(232, 121, 249, 0.8)';
-    ctx.shadowBlur = 8;
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#FFE81F';
+    ctx.lineWidth = 1.5;
     ctx.strokeRect(o.x + 1, o.y + 1, o.w - 2, o.h - 2);
-    ctx.shadowBlur = 0;
-    ctx.strokeStyle = 'rgba(232, 121, 249, 0.45)';
+    ctx.strokeStyle = 'rgba(255, 232, 31, 0.5)';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(o.x + 4, o.y + 4);
@@ -234,10 +226,8 @@ function drawRunner(t) {
 
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
-  ctx.strokeStyle = '#fb923c';
-  ctx.fillStyle = '#fb923c';
-  ctx.shadowColor = 'rgba(251, 146, 60, 0.9)';
-  ctx.shadowBlur = 12;
+  ctx.strokeStyle = '#f2f2f2';
+  ctx.fillStyle = '#f2f2f2';
   ctx.lineWidth = Math.max(2, w * 0.13);
 
   // Tête.
@@ -287,7 +277,6 @@ function drawRunner(t) {
     ctx.lineTo(cx + s2, footY);
     ctx.stroke();
   }
-  ctx.shadowBlur = 0;
 }
 
 function render(t) {
@@ -296,8 +285,8 @@ function render(t) {
   // Parallaxe : lointain (lent) puis proche (rapide).
   const farOffset = game.distance * 0.25;
   const nearOffset = game.distance * 0.55;
-  drawSkyline(farSkyline, farOffset, { baseY: game.groundY + 60, fill: '#0a1424' });
-  drawSkyline(nearSkyline, nearOffset, { baseY: game.groundY + 18, fill: '#101e33' });
+  drawSkyline(farSkyline, farOffset, { baseY: game.groundY + 60, fill: '#0b0e14' });
+  drawSkyline(nearSkyline, nearOffset, { baseY: game.groundY + 18, fill: '#12161f' });
 
   drawRoofs();
   drawObstacles();
