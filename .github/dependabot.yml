@@ -1,0 +1,10 @@
+# Images de base du Dockerfile (nginx) : une PR par mise à jour, avec le digest épinglé.
+# `cooldown.default-days: 14` : versions publiées depuis au moins 2 semaines (hors sécurité).
+version: 2
+updates:
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 14

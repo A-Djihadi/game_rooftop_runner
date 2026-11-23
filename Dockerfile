@@ -1,8 +1,8 @@
 # OhDjiGames — site statique (aucun build) servi par nginx sans root. TLS/routage : Traefik (Dokploy).
-FROM nginxinc/nginx-unprivileged:1.30-alpine
+FROM nginxinc/nginx-unprivileged:1.31-alpine@sha256:b5047b9b76845eac124358373c6852377c52e4b05834a47647e955dd91cb8f1e
 
 # CVE-2026-111497 (out-of-bounds write dans le décodeur brotli) : l'image de base
-# 1.30-alpine embarque encore brotli-libs 1.2.0-r1, corrigé en 1.2.1-r0.
+# 1.31-alpine embarque encore brotli-libs 1.2.0-r1, corrigé en 1.2.1-r0.
 # L'image tourne par défaut en utilisateur non-root (101) : repasser root le temps d'apk.
 USER root
 RUN apk add --no-cache --upgrade brotli-libs

@@ -32,7 +32,10 @@ list_images() {
 check_image() {
   ref=$1
   case "$ref" in
-    *@*) name=${ref%@*}; tag=${ref#*@} ;;
+    *@*) name=${ref%@*}; tag=${ref#*@}
+         # nom:tag@sha256:… : le digest fait foi, on retire le tag du nom du dépôt.
+         last=${name##*/}
+         case "$last" in *:*) name=${name%:*} ;; esac ;;
     *) name=$ref; tag=latest
        last=${ref##*/}
        case "$last" in *:*) name=${ref%:*}; tag=${ref##*:} ;; esac ;;
